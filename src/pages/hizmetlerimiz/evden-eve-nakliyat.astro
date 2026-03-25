@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import { siteConfig } from '../../data/site';
+
+const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent('Merhaba, evden eve nakliyat hizmeti hakkında bilgi almak istiyorum.')}`;
+---
+
+<BaseLayout
+  title="Evden Eve Nakliyat Hizmeti | Leventoğlu Nakliyat"
+  description="Profesyonel evden eve nakliyat hizmeti. Sigortalı taşımacılık, paketleme, mobilya sökme-takma. Türkiye geneli 81 ilde. Hemen teklif alın!"
+>
+  <div class="max-w-7xl mx-auto px-4">
+    <Breadcrumb items={[
+      { label: 'Ana Sayfa', href: '/' },
+      { label: 'Hizmetlerimiz', href: '/hizmetlerimiz/' },
+      { label: 'Evden Eve Nakliyat' },
+    ]} />
+  </div>
+
+  <section class="bg-primary-800 py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <h1 class="text-3xl md:text-5xl font-bold text-white mb-4">Evden Eve Nakliyat</h1>
+      <p class="text-gray-300 text-lg max-w-3xl">
+        Profesyonel ekibimiz ve modern ekipmanlarımızla evinizi güvenle taşıyoruz. Paketlemeden yerleştirmeye, anahtar teslim hizmet.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-padding bg-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="prose prose-lg max-w-none">
+        <p class="text-gray-600 leading-relaxed mb-6">
+          Leventoğlu Nakliyat olarak evden eve nakliyat hizmetimiz, eşyalarınızın profesyonel bir şekilde paketlenmesi, güvenle taşınması ve yeni evinize yerleştirilmesini kapsar. Şehir içi ve şehirler arası tüm ev taşıma işlemlerinde sigortalı hizmet sunuyoruz.
+        </p>
+
+        <h2 class="text-2xl font-bold text-primary-800 mb-4">Evden Eve Nakliyat Hizmetimiz Neleri Kapsar?</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {[
+            'Eşyaların profesyonel paketlenmesi',
+            'Mobilya sökme ve takma (demontaj/montaj)',
+            'Asansörlü taşıma (gerektiğinde)',
+            'Kapalı kasa araçlarla güvenli taşıma',
+            'Yeni evde eşyaların yerleştirilmesi',
+            'Sigortalı taşımacılık güvencesi',
+            'Kırılacak eşyalara özel koruma',
+            'Anahtar teslim hizmet',
+          ].map((item) => (
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-accent-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="text-gray-700">{item}</span>
+            </div>
+          ))}
+        </div>
+
+        <h2 class="text-2xl font-bold text-primary-800 mb-4">Taşınma Süreci Nasıl İşler?</h2>
+
+        <div class="space-y-6 mb-8">
+          {[
+            { step: '1', title: 'İletişim & Keşif', desc: 'WhatsApp veya telefonla bize ulaşın. Ücretsiz keşif ile eşyalarınız değerlendirilir ve size fiyat teklifi sunulur.' },
+            { step: '2', title: 'Paketleme', desc: 'Deneyimli ekibimiz eşyalarınızı özel malzemelerle paketler. Kırılabilir eşyalar ekstra korunur.' },
+            { step: '3', title: 'Taşıma', desc: 'Kapalı kasa, bakımlı araçlarımızla eşyalarınız güvenle yeni adresinize taşınır.' },
+            { step: '4', title: 'Yerleştirme', desc: 'Eşyalarınız yeni evinizde istediğiniz odalara yerleştirilir. Mobilyalar monte edilir.' },
+          ].map((item) => (
+            <div class="flex gap-4">
+              <div class="w-10 h-10 bg-accent-500 text-white rounded-full flex items-center justify-center font-bold shrink-0">{item.step}</div>
+              <div>
+                <h3 class="font-bold text-primary-800 mb-1">{item.title}</h3>
+                <p class="text-gray-600 text-sm">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="bg-accent-50 border border-accent-200 rounded-xl p-6 mb-8">
+          <h3 class="text-lg font-bold text-primary-800 mb-2">Hemen Fiyat Teklifi Alın!</h3>
+          <p class="text-gray-600 mb-4">WhatsApp üzerinden eşyalarınızın fotoğraflarını gönderin, size anında fiyat teklifi sunalım.</p>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
+            WhatsApp ile Teklif Al
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

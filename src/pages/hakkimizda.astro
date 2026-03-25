@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CTASection from '../components/CTASection.astro';
+import { siteConfig } from '../data/site';
+---
+
+<BaseLayout
+  title="Hakkımızda | Leventoğlu Nakliyat"
+  description="Leventoğlu Nakliyat hakkında bilgi edinin. Türkiye genelinde profesyonel evden eve nakliyat, ofis taşıma ve depolama hizmetleri."
+>
+  <div class="max-w-7xl mx-auto px-4">
+    <Breadcrumb items={[
+      { label: 'Ana Sayfa', href: '/' },
+      { label: 'Hakkımızda' },
+    ]} />
+  </div>
+
+  <!-- Hero -->
+  <section class="bg-primary-800 py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h1 class="text-3xl md:text-5xl font-bold text-white mb-4">Hakkımızda</h1>
+      <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+        Güvenli, profesyonel ve müşteri odaklı hizmet anlayışımızla tanışın.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-padding bg-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="prose prose-lg max-w-none">
+        <h2 class="text-2xl md:text-3xl font-bold text-primary-800 mb-6">Leventoğlu Nakliyat - Güvenli Taşınmanın Adresi</h2>
+
+        <p class="text-gray-600 leading-relaxed mb-6">
+          Leventoğlu Nakliyat olarak Ankara merkezli, Türkiye'nin 81 iline hizmet veren profesyonel bir nakliyat firmasıyız.
+          Evden eve nakliyat, ofis taşımacılığı, şehirlerarası nakliyat, eşya depolama ve paketleme hizmetleri ile
+          taşınma sürecinizi baştan sona yönetiyoruz.
+        </p>
+
+        <p class="text-gray-600 leading-relaxed mb-6">
+          Müşteri memnuniyetini en ön planda tutan firmamız, sigortalı taşımacılık güvencesiyle eşyalarınızı
+          yeni adresinize güvenle ulaştırır. Deneyimli ve eğitimli kadromuz, modern araç filomuz ve
+          profesyonel ekipmanlarımızla sektörde fark yaratıyoruz.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
+          <div class="bg-primary-50 rounded-xl p-6">
+            <h3 class="text-xl font-bold text-primary-800 mb-3">Vizyonumuz</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              Türkiye'nin en güvenilir ve tercih edilen nakliyat firması olmak.
+              Teknoloji ve inovasyonla desteklenen hizmet kalitemizle sektöre yön vermek.
+            </p>
+          </div>
+          <div class="bg-accent-50 rounded-xl p-6">
+            <h3 class="text-xl font-bold text-primary-800 mb-3">Misyonumuz</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              Her müşterimize özel, şeffaf ve güvenilir taşımacılık çözümleri sunmak.
+              Taşınmayı stresli bir süreçten, sorunsuz bir deneyime dönüştürmek.
+            </p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-primary-800 mb-6">Neden Biz?</h2>
+
+        <div class="space-y-4 mb-8">
+          {[
+            ['Sigortalı Taşımacılık', 'Tüm taşıma işlemlerimiz sigorta kapsamında gerçekleştirilir.'],
+            ['Profesyonel Ekip', 'Eğitimli ve deneyimli kadromuz ile eşyalarınıza özenle yaklaşırız.'],
+            ['81 İlde Hizmet', 'Türkiye\'nin her köşesine şehirler arası nakliyat hizmeti sunuyoruz.'],
+            ['Şeffaf Fiyatlandırma', 'Gizli maliyet olmadan, net ve adil fiyat teklifleri veriyoruz.'],
+            ['7/24 İletişim', 'WhatsApp ve telefon ile her zaman ulaşılabilir durumdayız.'],
+            ['Zamanında Teslimat', 'Söz verilen tarihte, dakik ve güvenilir teslimat garantisi.'],
+          ].map(([title, desc]) => (
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-accent-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <strong class="text-primary-800">{title}:</strong>
+                <span class="text-gray-600"> {desc}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h2 class="text-2xl font-bold text-primary-800 mb-6">Hizmet Bölgelerimiz</h2>
+
+        <p class="text-gray-600 leading-relaxed mb-6">
+          Ankara merkezli firmamız, Türkiye'nin tüm 81 ilinde evden eve nakliyat hizmeti vermektedir.
+          Marmara, Ege, Akdeniz, İç Anadolu, Karadeniz, Doğu Anadolu ve Güneydoğu Anadolu bölgelerinin
+          her iline güvenli ve hızlı taşımacılık çözümleri sunuyoruz.
+        </p>
+
+        <p class="text-gray-600 leading-relaxed">
+          İstanbul, İzmir, Antalya, Bursa, Konya, Kayseri, Trabzon, Diyarbakır ve diğer tüm illere
+          düzenli olarak şehirlerarası nakliyat seferleri gerçekleştirmekteyiz. Bulunduğunuz il ne olursa olsun,
+          bize ulaşın ve ücretsiz fiyat teklifi alın.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

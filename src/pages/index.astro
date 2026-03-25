@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import StatsSection from '../components/StatsSection.astro';
+import WhyUsSection from '../components/WhyUsSection.astro';
+import TestimonialSlider from '../components/TestimonialSlider.astro';
+import CitySelector from '../components/CitySelector.astro';
+import CTASection from '../components/CTASection.astro';
+import { services } from '../data/services';
+import { siteConfig } from '../data/site';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${siteConfig.url}/#business`,
+    name: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    telephone: siteConfig.phone,
+    email: siteConfig.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: siteConfig.address.street,
+      addressLocality: siteConfig.address.city,
+      addressRegion: siteConfig.address.district,
+      postalCode: siteConfig.address.zip,
+      addressCountry: siteConfig.address.country,
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Turkey',
+    },
+    priceRange: '$$',
+    image: `${siteConfig.url}/images/logo.png`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '850',
+      bestRating: '5',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteConfig.name,
+    url: siteConfig.url,
+  },
+];
+---
+
+<BaseLayout
+  title="Evden Eve Nakliyat | Türkiye Geneli Sigortalı Taşımacılık"
+  description="Leventoğlu Nakliyat ile Türkiye'nin 81 iline profesyonel evden eve nakliyat. Sigortalı taşımacılık, ücretsiz keşif, uygun fiyat. Hemen teklif alın!"
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <HeroSection />
+
+  <!-- Stats -->
+  <StatsSection />
+
+  <!-- Services -->
+  <section class="section-padding bg-white" id="hizmetler">
+    <div class="container-narrow">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-primary-800 mb-4">
+          Hizmetlerimiz
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          Taşınma sürecinizin her adımında yanınızdayız. İhtiyacınıza uygun hizmeti seçin.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map((service) => (
+          <a href={`/hizmetlerimiz/${service.slug}/`} class="card group hover:border-accent-200 border border-transparent block">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-600 transition-colors">
+              <svg class="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={service.icon} />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-primary-800 mb-2 group-hover:text-accent-600 transition-colors">{service.title}</h3>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">{service.shortDesc}</p>
+            <span class="text-accent-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+              Detaylı Bilgi
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us -->
+  <WhyUsSection />
+
+  <!-- City Selector -->
+  <CitySelector />
+
+  <!-- Testimonials -->
+  <TestimonialSlider />
+
+  <!-- CTA -->
+  <CTASection />
+</BaseLayout>

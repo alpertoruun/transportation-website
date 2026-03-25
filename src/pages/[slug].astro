@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CTASection from '../components/CTASection.astro';
+import { cities, getDistance, getEstimatedHours, getCityBySlug, popularRoutes } from '../data/cities';
+import { siteConfig } from '../data/site';
+import { getRouteIntro, getRouteServiceDetail, getRouteWhyUs, getCityIntro } from '../data/content-templates';
+
+export async function getStaticPaths() {
+  const paths: any[] = [];
+
+  // 1) City pages: /ankara-evden-eve-nakliyat
+  for (const city of cities) {
+    paths.push({
+      params: { slug: `${city.slug}-evden-eve-nakliyat` },
+      props: { type: 'city' as const, city, from: null, to: null },
+    });
+  }
+
+  // 2) Route pages: /istanbul-ankara-evden-eve-nakliyat
+  for (const from of cities) {
+    for (const to of cities) {
+      if (from.slug !== to.slug) {
+        paths.push({
+          params: { slug: `${from.slug}-${to.slug}-evden-eve-nakliyat` },
+          props: { type: 'route' as const, city: null, from, to },
+        });
+      }
+    }
+  }
+
+  return paths;
+}
+
+const { slug } = Astro.params;
+const { type, city, from, to } = Astro.props;
+
+// Compute page details based on type
+let title = '';
+let description = '';
+let h1 = '';
+let breadcrumbItems: { label: string; href?: string }[] = [];
+let whatsappMessage = '';
+let jsonLd: any = {};
+
+if (type === 'city' && city) {
+  title = `${city.name} Evden Eve Nakliyat`;
+  description = `${city.name} evden eve nakliyat hizmeti. Leventoğlu Nakliyat ile ${city.name} şehir içi ve şehirler arası sigortalı, profesyonel taşımacılık. Hemen teklif alın!`;
+  h1 = `${city.name} Evden Eve Nakliyat`;
+  breadcrumbItems = [
+    { label: 'Ana Sayfa', href: '/' },
+    { label: 'Şehirler', href: '/hizmetlerimiz/sehirlerarasi-nakliyat/' },
+    { label: `${city.name} Nakliyat` },
+  ];
+  whatsappMessage = `Merhaba, ${city.name} evden eve nakliyat hizmeti hakkında bilgi almak istiyorum.`;
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `${city.name} Evden Eve Nakliyat`,
+    description: description,
+    provider: {
+      '@type': 'LocalBusiness',
+      name: siteConfig.name,
+      telephone: siteConfig.phone,
+    },
+    areaServed: {
+      '@type': 'City',
+      name: city.name,
+    },
+  };
+} else if (type === 'route' && from && to) {
+  const km = getDistance(from, to);
+  const hours = getEstimatedHours(km);
+  title = `${from.name} ${to.name} Evden Eve Nakliyat`;
+  description = `${from.ablative} ${to.dative} evden eve nakliyat. ~${km} km, tahmini ${hours} saat. Leventoğlu Nakliyat ile sigortalı ve güvenli taşımacılık. Hemen teklif alın!`;
+  h1 = `${from.ablative} ${to.dative} Evden Eve Nakliyat`;
+  breadcrumbItems = [
+    { label: 'Ana Sayfa', href: '/' },
+    { label: `${from.name} Nakliyat`, href: `/${from.slug}-evden-eve-nakliyat/` },
+    { label: `${from.name} → ${to.name}` },
+  ];
+  whatsappMessage = `Merhaba, ${from.ablative} ${to.dative} evden eve nakliyat hizmeti hakkında bilgi almak istiyorum.`;
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `${from.name} ${to.name} Evden Eve Nakliyat`,
+    description: description,
+    provider: {
+      '@type': 'LocalBusiness',
+      name: siteConfig.name,
+      telephone: siteConfig.phone,
+    },
+    areaServed: [
+      { '@type': 'City', name: from.name },
+      { '@type': 'City', name: to.name },
+    ],
+  };
+}
+
+const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
+
+// Helper: get related routes for city page
+function getRelatedRoutesForCity(citySlug: string) {
+  const otherCities = ['istanbul', 'ankara', 'izmir', 'antalya', 'bursa', 'konya', 'kayseri', 'trabzon', 'adana', 'gaziantep', 'mersin', 'samsun', 'eskisehir', 'diyarbakir', 'kocaeli'];
+  return otherCities
+    .filter((s) => s !== citySlug)
+    .slice(0, 12)
+    .map((s) => {
+      const c = getCityBySlug(s)!;
+      return { name: c.name, slug: `${citySlug}-${s}-evden-eve-nakliyat` };
+    });
+}
+
+// Helper: get related routes for route page
+function getRelatedRoutesForRoute(fromSlug: string, toSlug: string) {
+  const majorCities = ['istanbul', 'ankara', 'izmir', 'antalya', 'bursa', 'konya'];
+  const fromRelated = majorCities.filter(s => s !== fromSlug && s !== toSlug).slice(0, 3).map(s => {
+    const c = getCityBySlug(s)!;
+    return { label: `${getCityBySlug(fromSlug)!.name} → ${c.name}`, href: `/${fromSlug}-${s}-evden-eve-nakliyat/` };
+  });
+  const toRelated = majorCities.filter(s => s !== fromSlug && s !== toSlug).slice(0, 3).map(s => {
+    const c = getCityBySlug(s)!;
+    return { label: `${c.name} → ${getCityBySlug(toSlug)!.name}`, href: `/${s}-${toSlug}-evden-eve-nakliyat/` };
+  });
+  // Also add reverse route
+  const reverse = { label: `${getCityBySlug(toSlug)!.name} → ${getCityBySlug(fromSlug)!.name}`, href: `/${toSlug}-${fromSlug}-evden-eve-nakliyat/` };
+  return [reverse, ...fromRelated, ...toRelated];
+}
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+  whatsappMessage={whatsappMessage}
+>
+  <div class="max-w-7xl mx-auto px-4">
+    <Breadcrumb items={breadcrumbItems} />
+  </div>
+
+  {/* CITY PAGE */}
+  {type === 'city' && city && (
+    <>
+      <section class="bg-primary-800 py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4">
+          <h1 class="text-3xl md:text-4xl font-bold text-white mb-3">{h1}</h1>
+          <p class="text-gray-300 text-lg max-w-3xl">
+            Leventoğlu Nakliyat ile {city.name} evden eve nakliyat hizmeti. Sigortalı, profesyonel ve ekonomik taşımacılık.
+          </p>
+        </div>
+      </section>
+
+      <section class="section-padding bg-white">
+        <div class="max-w-4xl mx-auto">
+          {/* City Info Box */}
+          <div class="bg-primary-50 rounded-xl p-6 mb-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div>
+              <div class="text-sm text-gray-500">Plaka</div>
+              <div class="text-xl font-bold text-primary-800">{city.plate}</div>
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">Bölge</div>
+              <div class="text-xl font-bold text-primary-800">{city.region}</div>
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">Hizmet</div>
+              <div class="text-xl font-bold text-accent-600">Aktif</div>
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">Sigorta</div>
+              <div class="text-xl font-bold text-green-600">Tam Kapsam</div>
+            </div>
+          </div>
+
+          <div class="prose prose-lg max-w-none">
+            <p class="text-gray-600 leading-relaxed mb-6">{getCityIntro(city)}</p>
+
+            <h2 class="text-2xl font-bold text-primary-800 mb-4">{city.name} Nakliyat Hizmetlerimiz</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+              {[
+                `${city.name} şehir içi evden eve nakliyat`,
+                `${city.ablative} şehirler arası nakliyat`,
+                `${city.name} asansörlü nakliyat`,
+                `${city.name} ofis taşımacılığı`,
+                `${city.name} eşya paketleme`,
+                `${city.name} eşya depolama`,
+              ].map((item) => (
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-accent-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                  <span class="text-gray-700 text-sm">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            <h2 class="text-2xl font-bold text-primary-800 mb-4">{city.ablative} Popüler Nakliyat Rotaları</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+              {getRelatedRoutesForCity(city.slug).map((route) => (
+                <a href={`/${route.slug}/`} class="flex items-center gap-2 p-3 rounded-lg border border-gray-200 hover:border-accent-300 hover:bg-accent-50 transition-colors text-sm">
+                  <svg class="w-4 h-4 text-accent-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                  {city.name} → {route.name}
+                </a>
+              ))}
+            </div>
+
+            <div class="bg-accent-50 border border-accent-200 rounded-xl p-6">
+              <h3 class="text-lg font-bold text-primary-800 mb-2">{city.name} Nakliyat Fiyat Teklifi Alın!</h3>
+              <p class="text-gray-600 mb-4">WhatsApp üzerinden {city.name} nakliyat fiyat teklifinizi hemen alın.</p>
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
+                WhatsApp ile Fiyat Al
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )}
+
+  {/* ROUTE PAGE */}
+  {type === 'route' && from && to && (() => {
+    const km = getDistance(from, to);
+    const hours = getEstimatedHours(km);
+    return (
+      <>
+        <section class="bg-primary-800 py-12 md:py-16">
+          <div class="max-w-7xl mx-auto px-4">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-3">{h1}</h1>
+            <p class="text-gray-300 text-lg max-w-3xl">
+              {from.name} - {to.name} arası evden eve nakliyat. Sigortalı, profesyonel ve ekonomik taşımacılık hizmeti.
+            </p>
+          </div>
+        </section>
+
+        <section class="section-padding bg-white">
+          <div class="max-w-4xl mx-auto">
+            {/* Route Info Box */}
+            <div class="bg-primary-50 rounded-xl p-6 mb-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div>
+                <div class="text-sm text-gray-500">Mesafe</div>
+                <div class="text-xl font-bold text-primary-800">~{km} km</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-500">Tahmini Süre</div>
+                <div class="text-xl font-bold text-primary-800">{hours} saat</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-500">Sigorta</div>
+                <div class="text-xl font-bold text-green-600">Tam Kapsam</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-500">Teklif</div>
+                <div class="text-xl font-bold text-accent-600">Ücretsiz</div>
+              </div>
+            </div>
+
+            <div class="prose prose-lg max-w-none">
+              <p class="text-gray-600 leading-relaxed mb-6">{getRouteIntro(from, to, km, hours)}</p>
+
+              <h2 class="text-2xl font-bold text-primary-800 mb-4">{from.name} {to.name} Nakliyat Hizmetlerimiz</h2>
+              <p class="text-gray-600 leading-relaxed mb-6">{getRouteServiceDetail(from, to)}</p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+                {[
+                  'Sigortalı taşımacılık güvencesi',
+                  'Profesyonel paketleme hizmeti',
+                  'Mobilya sökme & takma (montaj)',
+                  'Asansörlü taşıma imkanı',
+                  'Kapıdan kapıya teslimat',
+                  'Anahtar teslim hizmet',
+                ].map((item) => (
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-accent-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                    <span class="text-gray-700 text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <h2 class="text-2xl font-bold text-primary-800 mb-4">Neden Leventoğlu Nakliyat?</h2>
+              <p class="text-gray-600 leading-relaxed mb-6">{getRouteWhyUs(from, to)}</p>
+
+              <h2 class="text-2xl font-bold text-primary-800 mb-4">{from.name} {to.name} Nakliyat Fiyatları</h2>
+              <p class="text-gray-600 leading-relaxed mb-6">
+                {from.ablative} {to.dative} nakliyat fiyatları; taşınacak eşya miktarı, kat bilgisi, asansör ihtiyacı ve ek hizmetlere göre değişiklik gösterir. En doğru fiyat teklifi için WhatsApp üzerinden bize ulaşın. Ücretsiz keşif ve şeffaf fiyatlandırma ile hizmetinizdeyiz.
+              </p>
+
+              <div class="bg-accent-50 border border-accent-200 rounded-xl p-6 mb-8">
+                <h3 class="text-lg font-bold text-primary-800 mb-2">{from.name} {to.name} Nakliyat Teklifi Alın!</h3>
+                <p class="text-gray-600 mb-4">WhatsApp üzerinden hemen ücretsiz fiyat teklifi alın.</p>
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
+                  WhatsApp ile Fiyat Al
+                </a>
+              </div>
+
+              <h2 class="text-2xl font-bold text-primary-800 mb-4">İlgili Nakliyat Rotaları</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                {getRelatedRoutesForRoute(from.slug, to.slug).map((route) => (
+                  <a href={route.href} class="flex items-center gap-2 p-3 rounded-lg border border-gray-200 hover:border-accent-300 hover:bg-accent-50 transition-colors text-sm">
+                    <svg class="w-4 h-4 text-accent-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    {route.label} Nakliyat
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  })()}
+
+  <CTASection />
+</BaseLayout>
