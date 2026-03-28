@@ -1,0 +1,37 @@
+---
+interface Props {
+  title?: string;
+  count?: number;
+  start?: number;
+}
+
+const { title = 'Çalışmalarımızdan Kareler', count = 6, start = 1 } = Astro.props;
+
+const images = Array.from({ length: count }, (_, i) => ({
+  src: `/images/tasima/evden-eve-nakliyat-${String(start + i).padStart(2, '0')}.jpeg`,
+  alt: `Evden eve nakliyat hizmeti - Leventoğlu Nakliyat ${start + i}`,
+}));
+---
+
+<div class="my-10 not-prose">
+  <h3 class="text-xl font-bold text-primary-800 mb-4">{title}</h3>
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+    {images.map((img) => (
+      <a href={img.src} target="_blank" rel="noopener" class="group relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100">
+        <img
+          src={img.src}
+          alt={img.alt}
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    ))}
+  </div>
+  <div class="text-center mt-4">
+    <a href="/galeri/" class="text-accent-600 hover:text-accent-700 text-sm font-semibold inline-flex items-center gap-1">
+      Tüm fotoğrafları gör
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+    </a>
+  </div>
+</div>
