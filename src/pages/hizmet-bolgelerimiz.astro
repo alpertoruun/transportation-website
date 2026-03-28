@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CTASection from '../components/CTASection.astro';
+import CitySelector from '../components/CitySelector.astro';
+import { cities } from '../data/cities';
+
+// Group cities by region
+const regions: Record<string, typeof cities> = {};
+for (const city of cities) {
+  if (!regions[city.region]) regions[city.region] = [];
+  regions[city.region].push(city);
+}
+
+const regionOrder = ['Marmara', 'İç Anadolu', 'Ege', 'Akdeniz', 'Karadeniz', 'Doğu Anadolu', 'Güneydoğu Anadolu'];
+const sortedRegions = regionOrder.filter((r) => regions[r]).map((r) => ({
+  name: r,
+  cities: regions[r].sort((a, b) => a.name.localeCompare(b.name, 'tr')),
+}));
+---
+
+<BaseLayout
+  title="Hizmet Bölgelerimiz | 81 İl Nakliyat Hizmeti"
+  description="Leventoğlu Nakliyat olarak Türkiye'nin 81 iline evden eve nakliyat hizmeti sunuyoruz. Şehrinizi seçin, nakliyat bilgilerine ulaşın."
+>
+  <div class="max-w-7xl mx-auto px-4">
+    <Breadcrumb items={[
+      { label: 'Ana Sayfa', href: '/' },
+      { label: 'Hizmet Bölgelerimiz' },
+    ]} />
+  </div>
+
+  <section class="bg-primary-800 py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h1 class="text-3xl md:text-5xl font-bold text-white mb-4">
+        Hizmet Bölgelerimiz
+      </h1>
+      <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+        Türkiye genelinde <strong class="text-accent-400">81 il</strong> ve <strong class="text-accent-400">6.480+ güzergahta</strong> evden eve nakliyat hizmeti sunuyoruz.
+      </p>
+    </div>
+  </section>
+
+  <!-- City Selector -->
+  <CitySelector />
+
+  <!-- Regions & Cities -->
+  <section class="section-padding bg-white">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-2xl md:text-3xl font-bold text-primary-800 text-center mb-12">
+        Bölgelere Göre Hizmet Alanlarımız
+      </h2>
+
+      <div class="space-y-12">
+        {sortedRegions.map((region) => (
+          <div>
+            <h3 class="text-xl font-bold text-primary-700 mb-4 pb-2 border-b-2 border-accent-400 inline-block">
+              {region.name} Bölgesi
+            </h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mt-4">
+              {region.cities.map((city) => (
+                <a
+                  href={`/${city.slug}-evden-eve-nakliyat/`}
+                  class="group flex items-center gap-2 px-4 py-3 bg-gray-50 hover:bg-accent-50 border border-gray-200 hover:border-accent-300 rounded-lg transition-all"
+                >
+                  <span class="text-xs font-mono text-gray-400 group-hover:text-accent-600 w-6">{String(city.plate).padStart(2, '0')}</span>
+                  <span class="text-sm font-medium text-gray-700 group-hover:text-primary-800">{city.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section-padding bg-gray-50">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl md:text-3xl font-bold text-primary-800 mb-8">
+        Şehir ve Güzergah Sayfaları Nasıl Çalışır?
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card text-center">
+          <div class="w-12 h-12 bg-accent-100 text-accent-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+          <h3 class="font-semibold text-primary-800 mb-2">Şehrinizi Seçin</h3>
+          <p class="text-sm text-gray-600">Nereden nereye taşınacağınızı yukarıdaki bölümden seçin veya aşağıda ilinize tıklayın.</p>
+        </div>
+        <div class="card text-center">
+          <div class="w-12 h-12 bg-accent-100 text-accent-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+          <h3 class="font-semibold text-primary-800 mb-2">Detayları Görün</h3>
+          <p class="text-sm text-gray-600">Mesafe, tahmini süre, güzergah bilgileri ve hizmet detaylarını inceleyin.</p>
+        </div>
+        <div class="card text-center">
+          <div class="w-12 h-12 bg-accent-100 text-accent-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+          <h3 class="font-semibold text-primary-800 mb-2">Teklif Alın</h3>
+          <p class="text-sm text-gray-600">WhatsApp üzerinden ücretsiz ve hızlı fiyat teklifi alın.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
