@@ -6,7 +6,9 @@ export const siteConfig = {
   description: 'Türkiye genelinde profesyonel evden eve nakliyat hizmeti. 81 ilde sigortalı, güvenli ve ekonomik taşımacılık. Hemen teklif alın!',
   phone: '+90 532 515 80 09',
   phoneDisplay: '0532 515 80 09',
-  whatsapp: '905325158009',
+  phone2: '+90 534 637 44 44',
+  phone2Display: '0534 637 44 44',
+  whatsapp: '905346374444',
   whatsappDefault: 'Merhaba, evden eve nakliyat hizmeti hakkında bilgi almak istiyorum.',
   email: 'info@leventoglunakliyat.com',
   address: {
