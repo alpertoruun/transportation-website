@@ -115,9 +115,12 @@ const topRoutes = popularRoutes.slice(0, 10).map(([fromSlug, toSlug]) => {
       <p class="text-xs text-gray-400">
         © {currentYear} {siteConfig.name}. Tüm hakları saklıdır.
       </p>
-      <div class="flex gap-4 text-xs text-gray-400">
-        <a href="/sikca-sorulan-sorular/" class="hover:text-white transition-colors">SSS</a>
-        <a href="/iletisim/" class="hover:text-white transition-colors">İletişim</a>
+      <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-gray-400">
+        <a href="/kvkk-aydinlatma-metni/" class="hover:text-white transition-colors">KVKK Aydınlatma Metni</a>
+        <a href="/gizlilik-politikasi/" class="hover:text-white transition-colors">Gizlilik Politikası</a>
+        <a href="/cerez-politikasi/" class="hover:text-white transition-colors">Çerez Politikası</a>
+        <a href="/kullanim-sartlari/" class="hover:text-white transition-colors">Kullanım Şartları</a>
+        <button type="button" data-cookie-settings class="hover:text-white transition-colors">Çerez Tercihleri</button>
       </div>
     </div>
   </div>

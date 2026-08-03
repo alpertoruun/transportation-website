@@ -99,9 +99,10 @@ import { siteConfig } from '../data/site';
         <!-- Map -->
         <div>
           <h2 class="text-2xl font-bold text-primary-800 mb-6">Konum</h2>
-          <div class="w-full h-80 md:h-96 rounded-xl overflow-hidden shadow-md bg-gray-200">
+          <div id="map-container" class="relative w-full h-80 md:h-96 rounded-xl overflow-hidden shadow-md bg-gray-100">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3054.5!2d32.89!3d39.97!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sPursaklar%2C+Ankara!5e0!3m2!1str!2str!4v1600000000000!5m2!1str!2str"
+              id="google-map"
+              data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3054.5!2d32.89!3d39.97!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sPursaklar%2C+Ankara!5e0!3m2!1str!2str!4v1600000000000!5m2!1str!2str"
               width="100%"
               height="100%"
               style="border:0;"
@@ -110,6 +111,11 @@ import { siteConfig } from '../data/site';
               referrerpolicy="no-referrer-when-downgrade"
               title="Leventoğlu Nakliyat Konum"
             ></iframe>
+            <div id="map-placeholder" class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+              <svg class="mb-3 h-10 w-10 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              <p class="mb-4 max-w-md text-sm leading-6 text-gray-600">Harita Google tarafından sağlanır. Yüklediğinizde IP ve cihaz bilgileriniz Google'a iletilebilir.</p>
+              <button id="load-map" type="button" class="btn-secondary">Haritayı Yükle</button>
+            </div>
           </div>
 
           <!-- Quick Action Buttons -->
@@ -133,3 +139,27 @@ import { siteConfig } from '../data/site';
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const consentKey = 'leventoglu-consent-v1';
+  const map = document.getElementById('google-map') as HTMLIFrameElement | null;
+  const placeholder = document.getElementById('map-placeholder');
+
+  function loadMap() {
+    if (!map || map.src) return;
+    const source = map.dataset.src;
+    if (source) map.src = source;
+    placeholder?.classList.add('hidden');
+  }
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(consentKey) || 'null');
+    if (saved?.external) loadMap();
+  } catch {}
+
+  document.getElementById('load-map')?.addEventListener('click', loadMap);
+  window.addEventListener('leventoglu:consent', (event) => {
+    const choice = (event as CustomEvent).detail;
+    if (choice?.external) loadMap();
+  });
+</script>

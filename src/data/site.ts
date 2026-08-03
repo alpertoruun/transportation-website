@@ -11,6 +11,8 @@ export const siteConfig = {
   whatsapp: '905346374444',
   whatsappDefault: 'Merhaba, evden eve nakliyat hizmeti hakkında bilgi almak istiyorum.',
   email: 'info@leventoglunakliyat.com',
+  // Yayına almadan önce işletmenin fatura/vergi levhasındaki tam unvanıyla doğrulanmalıdır.
+  legalName: 'Leventoğlu Nakliyat',
   address: {
     street: 'Fatih, Orhangazi Cd. No:9A',
     district: 'Pursaklar',
@@ -25,4 +27,5 @@ export const siteConfig = {
   },
   gtmId: 'GTM-XXXXXXX', // Google Tag Manager - kullanıcı kendi ID'sini girecek
   ga4Id: 'G-XXXXXXXXXX', // Google Analytics 4 - kullanıcı kendi ID'sini girecek
+  googleAdsId: 'AW-18052490002',
 } as const;

@@ -1,0 +1,63 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { siteConfig } from '../data/site';
+---
+
+<LegalLayout
+  title="Kullanım Şartları | Leventoğlu Nakliyat"
+  description="Leventoğlu Nakliyat web sitesi kullanım şartları, tekliflerin niteliği ve kullanıcı sorumlulukları."
+  heading="Kullanım Şartları"
+>
+  <p>
+    Bu web sitesini kullanarak aşağıdaki şartları kabul etmiş olursunuz. Şartları kabul etmiyorsanız siteyi ve teklif
+    araçlarını kullanmamalısınız.
+  </p>
+
+  <h2>1. Site sahibi ve kapsam</h2>
+  <p>
+    Site, {siteConfig.legalName} tarafından işletilir. İletişim bilgileri:
+    {siteConfig.address.full}, <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>,
+    <a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneDisplay}</a>.
+  </p>
+
+  <h2>2. Bilgilendirme ve teklif talepleri</h2>
+  <p>
+    Sitedeki fiyat, süre, mesafe ve hizmet açıklamaları genel bilgilendirme niteliğindedir. İnternet sitesi üzerinden
+    form doldurmak veya WhatsApp mesajı hazırlamak tek başına taşıma sözleşmesi kurmaz. Kesin kapsam, ücret, sigorta,
+    teslim tarihi ve tarafların diğer yükümlülükleri; keşif ve karşılıklı teyit sonrasında ayrıca belirlenir.
+  </p>
+
+  <h2>3. Kullanıcının sorumlulukları</h2>
+  <ul>
+    <li>Teklif için doğru, güncel ve yeterli bilgi vermek.</li>
+    <li>Taşınması yasak, tehlikeli veya özel izin gerektiren eşya hakkında önceden bilgi vermek.</li>
+    <li>Siteyi hukuka aykırı, yanıltıcı, zarar verici veya sistem güvenliğini bozucu biçimde kullanmamak.</li>
+    <li>Başkasına ait kişisel bilgileri yetkisiz şekilde paylaşmamak.</li>
+  </ul>
+
+  <h2>4. Fikri mülkiyet</h2>
+  <p>
+    Sitedeki marka, logo, tasarım, metin, fotoğraf ve diğer içerikler üzerindeki haklar, aksi belirtilmedikçe
+    {siteConfig.legalName}'na veya ilgili hak sahiplerine aittir. İçerikler yazılı izin olmadan ticari amaçla
+    çoğaltılamaz, yeniden yayımlanamaz veya uyarlanamaz.
+  </p>
+
+  <h2>5. Üçüncü taraf bağlantıları</h2>
+  <p>
+    Site; WhatsApp, Google Maps ve sosyal medya gibi üçüncü taraf hizmetlerine bağlantı verebilir. Bu hizmetlerin
+    kullanılabilirliği, güvenliği ve veri işleme uygulamaları kendi sağlayıcılarının koşullarına tabidir.
+  </p>
+
+  <h2>6. Sorumluluğun sınırı</h2>
+  <p>
+    Sitenin güncel ve kesintisiz tutulması için makul çaba gösterilir; ancak teknik kesinti veya üçüncü taraf hizmetlerinden
+    kaynaklanan aksaklıklar tamamen önlenemeyebilir. Bu hüküm, tüketicinin emredici mevzuattan doğan haklarını veya
+    işletmenin kastı ya da ağır kusurundan doğan sorumluluğunu ortadan kaldırmaz.
+  </p>
+
+  <h2>7. Değişiklikler ve uygulanacak hukuk</h2>
+  <p>
+    Bu şartlar gerektiğinde güncellenebilir; güncel sürüm ve tarihi bu sayfada yayımlanır. Şartlara Türk hukuku uygulanır.
+    Tüketicilerin tüketici hakem heyeti, tüketici mahkemesi ve diğer yetkili mercilere başvuru hakları saklıdır.
+  </p>
+</LegalLayout>
