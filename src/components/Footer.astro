@@ -21,7 +21,7 @@ const topRoutes = popularRoutes.slice(0, 10).map(([fromSlug, toSlug]) => {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       <!-- About Column -->
       <div>
-        <img src="/images/logo.png" alt={siteConfig.name} class="h-10 mb-4" loading="lazy" />
+        <img src="/images/logo.png" alt={siteConfig.name} class="h-10 mb-4 brightness-0 invert" loading="lazy" />
         <p class="text-sm leading-relaxed mb-4">
           Türkiye genelinde 81 ilde profesyonel evden eve nakliyat, ofis taşımacılığı ve eşya depolama hizmetleri sunuyoruz. Sigortalı ve güvenli taşımacılık.
         </p>
@@ -109,10 +109,8 @@ const topRoutes = popularRoutes.slice(0, 10).map(([fromSlug, toSlug]) => {
     </div>
   </div>
 
-  <div class="footer-wordmark" aria-label="Leventoğlu Nakliyat"><span>Leventoğlu</span><span>Nakliyat</span></div>
-
   <!-- Bottom bar -->
-  <div class="footer-bottom">
+  <div class="border-t border-primary-800">
     <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-2">
       <p class="text-xs text-gray-400">
         © {currentYear} {siteConfig.name}. Tüm hakları saklıdır.
@@ -127,12 +125,3 @@ const topRoutes = popularRoutes.slice(0, 10).map(([fromSlug, toSlug]) => {
     </div>
   </div>
 </footer>
-
-<style>
-  .footer-wordmark { display: flex; justify-content: space-between; gap: .2em; overflow: hidden; padding: 1.5rem calc(var(--page-margin) + 5rem) clamp(1.25rem, 3vw, 2.5rem) var(--page-margin); color: #fff; font-size: clamp(3.5rem, 7.8vw, 7rem); font-weight: 760; line-height: .9; letter-spacing: -.075em; white-space: nowrap; }
-  .footer-bottom { background: #0c1b2a; }
-  .footer-wordmark span:last-child { color: #fff; }
-  footer .max-w-7xl { max-width: min(100% - (2 * var(--page-margin)), 110rem); }
-  footer .grid { column-gap: clamp(1.5rem, 4vw, 4rem); row-gap: 3rem; }
-  @media (max-width: 700px) { .footer-wordmark { flex-direction: column; padding-right: calc(var(--page-margin) + 4rem); font-size: 15vw; } .footer-wordmark span:last-child { align-self: flex-end; } }
-</style>

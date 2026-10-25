@@ -28,15 +28,7 @@ const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${encodeURICompon
         </p>
       </div>
 
-      <div class="offer-layout">
-        <aside class="offer-aside">
-          <h2>İletişim</h2>
-          <p>Bilgilerinizi paylaştıktan sonra WhatsApp üzerinden size dönüş yapalım.</p>
-          <a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneDisplay}</a>
-          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-          <p>{siteConfig.address.full}</p>
-        </aside>
-      <div class="card offer-form">
+      <div class="card max-w-2xl mx-auto">
         <form id="teklif-form" class="space-y-5">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
@@ -94,7 +86,6 @@ const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${encodeURICompon
           </button>
         </form>
       </div>
-      </div>
     </div>
   </section>
 </BaseLayout>
@@ -102,12 +93,12 @@ const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${encodeURICompon
 <script define:vars={{ whatsappNumber: siteConfig.whatsapp }}>
   document.getElementById('teklif-form')?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const from = document.getElementById('from-city').value;
-    const to = document.getElementById('to-city').value;
-    const date = document.getElementById('date').value;
-    const note = document.getElementById('note').value;
+    const name = (document.getElementById('name') as HTMLInputElement).value;
+    const phone = (document.getElementById('phone') as HTMLInputElement).value;
+    const from = (document.getElementById('from-city') as HTMLSelectElement).value;
+    const to = (document.getElementById('to-city') as HTMLSelectElement).value;
+    const date = (document.getElementById('date') as HTMLInputElement).value;
+    const note = (document.getElementById('note') as HTMLTextAreaElement).value;
 
     let message = `Merhaba, nakliyat teklifi almak istiyorum.\n\n`;
     message += `Ad: ${name}\n`;
@@ -120,17 +111,3 @@ const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${encodeURICompon
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
   });
 </script>
-
-<style>
-  .offer-layout { display: grid; grid-template-columns: minmax(15rem, .7fr) minmax(0, 1.3fr); align-items: start; gap: clamp(2rem, 5vw, 5rem); }
-  .offer-aside { padding: clamp(1.25rem, 3vw, 2.25rem); background: #112438; color: #f5f7fa; }
-  .offer-aside h2 { margin: 0 0 1rem; color: #fff; font-size: 1.5rem; }
-  .offer-aside p { max-width: 42ch; color: #d5dee7; line-height: 1.55; }
-  .offer-aside a { display: block; margin-top: 1rem; color: #fff; font-weight: 650; }
-  .offer-form { min-width: 0; }
-  @media (max-width: 760px) {
-    .offer-layout { grid-template-columns: 1fr; }
-    .offer-form { order: 1; }
-    .offer-aside { order: 2; }
-  }
-</style>
