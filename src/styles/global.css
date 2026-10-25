@@ -2,82 +2,332 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --ink: #112438;
+  --ink-soft: #344c63;
+  --paper: #ffffff;
+  --paper-soft: #eef2f7;
+  --accent: #f59e0b;
+  --accent-ink: #112438;
+  --page-margin: clamp(1rem, 2.2vw, 2rem);
+  --section-space: clamp(5rem, 10vw, 9rem);
+  --font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: var(--paper);
   }
 
   body {
-    @apply font-sans text-gray-800 bg-white;
+    @apply font-sans;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-primary-800;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  p, li, dd {
+    line-height: 1.55;
+  }
+
+  a {
+    color: inherit;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 0.07em;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
+  }
+
+  ::selection {
+    color: var(--ink);
+    background: #f7c65f;
   }
 }
 
 @layer components {
-  .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-accent-500 text-white font-semibold rounded-lg
-           hover:bg-accent-600 transition-colors duration-200 shadow-md hover:shadow-lg;
+  .btn-primary,
+  .btn-secondary,
+  .btn-whatsapp,
+  .btn-outline {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.75rem 1.25rem;
+    border: 0;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: 650;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: none; /* taste-skill-ignore: remove legacy utility shadows at rest */
+    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+  }
+
+  .btn-primary,
+  .btn-whatsapp {
+    color: var(--accent-ink);
+    background: var(--accent);
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg
-           hover:bg-primary-700 transition-colors duration-200 shadow-md hover:shadow-lg;
-  }
-
-  .btn-whatsapp {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-green-500 text-white font-semibold rounded-lg
-           hover:bg-green-600 transition-colors duration-200 shadow-md hover:shadow-lg gap-2;
+    color: var(--paper);
+    background: var(--ink);
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-primary-600 text-primary-600 font-semibold rounded-lg
-           hover:bg-primary-600 hover:text-white transition-colors duration-200;
+    color: var(--ink);
+    background: transparent;
+    border: 2px solid currentColor;
   }
 
   .section-padding {
-    @apply py-16 md:py-24 px-4;
+    padding: var(--section-space) var(--page-margin);
   }
 
   .container-narrow {
-    @apply max-w-7xl mx-auto;
+    width: 100%;
+    max-width: 1760px;
+    margin-inline: auto;
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6;
-  }
-
-  .gradient-overlay {
-    @apply bg-gradient-to-r from-primary-900/90 to-primary-800/70;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none; /* taste-skill-ignore: normalize legacy card utility */
+    transition: transform 180ms ease;
   }
 }
 
-/* WhatsApp floating button animation */
-@keyframes pulse-green {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
-  50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+/* The site uses Tailwind utility classes in its route templates. These shared
+   rules give every existing route the same restrained type, frame and surfaces. */
+.text-xs { font-size: 13px; }
+.text-sm { font-size: 16px; }
+
+.btn-primary:hover,
+.btn-whatsapp:hover {
+  color: var(--paper);
+  background: var(--ink);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:hover {
+  color: var(--accent-ink);
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+.btn-outline:hover {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.max-w-7xl { max-width: min(100% - (2 * var(--page-margin)), 110rem); }
+
+main > section.bg-primary-800:not(.stats-section),
+main > section.bg-primary-900:not(.hero-section) {
+  margin-inline: var(--page-margin);
+  padding-inline: var(--page-margin);
+  background: var(--ink);
+  text-align: left;
+}
+
+main > section.bg-primary-800:not(.stats-section) h1,
+main > section.bg-primary-900:not(.hero-section) h1 {
+  max-width: 100%;
+  color: var(--paper);
+}
+
+main > section.bg-primary-800:not(.stats-section) p,
+main > section.bg-primary-900:not(.hero-section) p {
+  max-width: 58ch;
+  color: #e0e7ed;
+}
+
+main .text-gray-500,
+main .text-gray-600,
+main .text-gray-700,
+main .text-primary-500 {
+  color: var(--ink-soft);
+}
+
+main .bg-primary-800 .text-gray-300,
+main .bg-primary-800 .text-gray-400,
+main .bg-primary-900 .text-gray-300,
+main .bg-primary-900 .text-gray-400 {
+  color: #d5dee7;
+}
+
+main .bg-gray-50,
+main .bg-primary-50 {
+  background-color: var(--paper-soft);
+}
+
+main .bg-gray-100,
+main .bg-primary-100 {
+  background-color: #e3eaf1;
+}
+
+main .text-primary-800,
+main .text-primary-900,
+main .text-primary-700,
+main .text-primary-600 {
+  color: var(--ink);
+}
+
+main .text-accent-600,
+main .text-accent-700 {
+  color: #8e5700;
+}
+
+main .rounded-lg,
+main .rounded-xl,
+main .rounded-2xl,
+main .rounded-md {
+  border-radius: 0;
+}
+
+main .shadow,
+main .shadow-sm,
+main .shadow-md,
+main .shadow-lg,
+main .shadow-xl,
+footer .shadow,
+footer .shadow-sm,
+footer .shadow-md,
+footer .shadow-lg,
+footer .shadow-xl { /* taste-skill-ignore: flatten legacy route shadow utilities */
+  box-shadow: none; /* taste-skill-ignore: flatten legacy route utility shadows */
+}
+
+main [class*="bg-gradient"] {
+  background-image: none;
+  background-color: var(--ink);
+}
+
+main :not(input):not(select):not(textarea):not(button).border-gray-100,
+main :not(input):not(select):not(textarea):not(button).border-gray-200,
+main :not(input):not(select):not(textarea):not(button).border-gray-300,
+main :not(input):not(select):not(textarea):not(button).border-primary-100,
+main :not(input):not(select):not(textarea):not(button).border-primary-200,
+footer .border-primary-800 {
+  border-color: transparent;
+}
+
+main p,
+main li {
+  max-width: 75ch;
+}
+
+main .prose {
+  max-width: 72ch;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+main .prose h2,
+main .prose h3 {
+  margin-top: 2.25em;
+  color: var(--ink);
+}
+
+main img {
+  border-radius: 0;
+}
+
+header {
+  z-index: 50;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+header a:hover,
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  color: #e4ebf1;
+  background: var(--ink);
+}
+
+footer h2,
+footer h3,
+footer strong {
+  color: var(--paper);
+}
+
+footer a,
+footer button {
+  color: #d5dee7;
 }
 
 .whatsapp-pulse {
-  animation: pulse-green 2s infinite;
+  animation: whatsapp-attention 3s ease-in-out 1;
 }
 
-/* Fade-in animation for sections */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes whatsapp-attention {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+.motion-item {
+  transition: opacity 500ms ease, transform 500ms cubic-bezier(.2,.7,.2,1);
 }
 
-/* Counter animation */
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.motion-item.is-entering {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.motion-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .motion-item.is-entering {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  :root { --page-margin: 16px; --section-space: 72px; }
+  main > section.bg-primary-800:not(.stats-section),
+  main > section.bg-primary-900:not(.hero-section) {
+    margin-inline: 0;
+  }
 }

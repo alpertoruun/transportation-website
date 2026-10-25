@@ -63,7 +63,7 @@ const jsonLd = [
   <!-- Services -->
   <section class="section-padding bg-white" id="hizmetler">
     <div class="container-narrow">
-      <div class="text-center mb-12">
+      <div class="services-intro mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-primary-800 mb-4">
           Hizmetlerimiz
         </h2>
@@ -72,19 +72,12 @@ const jsonLd = [
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="services-list">
         {services.map((service) => (
-          <a href={`/hizmetlerimiz/${service.slug}/`} class="card group hover:border-accent-200 border border-transparent block">
-            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-600 transition-colors">
-              <svg class="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={service.icon} />
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-primary-800 mb-2 group-hover:text-accent-600 transition-colors">{service.title}</h3>
-            <p class="text-gray-600 text-sm leading-relaxed mb-4">{service.shortDesc}</p>
-            <span class="text-accent-600 text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+          <a href={`/hizmetlerimiz/${service.slug}/`} class="service-row">
+            <span class="service-copy"><strong>{service.title}</strong><span>{service.shortDesc}</span></span>
+            <span class="service-link">
               Detaylı Bilgi
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
             </span>
           </a>
         ))}
@@ -104,3 +97,16 @@ const jsonLd = [
   <!-- CTA -->
   <CTASection />
 </BaseLayout>
+
+<style>
+  .services-intro { max-width: 48rem; }
+  .services-list { display: grid; grid-template-columns: 1fr; gap: .35rem; }
+  .service-row { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 1.25rem; padding: 1.4rem 1rem; color: var(--ink); background: #f3f6f8; text-decoration: none; }
+  .service-copy { display: grid; gap: .35rem; }
+  .service-copy strong { font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.2; }
+  .service-copy span { max-width: 65ch; color: #4f5c65; line-height: 1.55; }
+  .service-link { color: #805000; font-weight: 650; white-space: nowrap; }
+  .service-row:hover { background: #e8edf2; }
+  .service-row:hover .service-copy strong { color: #805000; }
+  @media (max-width: 600px) { .service-row { grid-template-columns: 1fr; gap: .75rem; } }
+</style>

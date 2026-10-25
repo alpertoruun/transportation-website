@@ -6,20 +6,21 @@ const consentKey = 'leventoglu-consent-v1';
 
 <aside
   id="cookie-consent"
-  class="fixed inset-x-3 bottom-3 z-[100] hidden max-w-3xl rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl md:left-1/2 md:right-auto md:w-[calc(100%-2rem)] md:-translate-x-1/2 md:p-6"
+  class="cookie-consent-panel hidden"
   aria-labelledby="cookie-title"
   aria-live="polite"
+  tabindex="-1"
 >
   <div>
     <h2 id="cookie-title" class="text-lg font-bold text-primary-900">Gizlilik tercihleriniz</h2>
     <p class="mt-2 text-sm leading-6 text-gray-600">
       Zorunlu olmayan reklam teknolojilerini ve Google haritasını yalnızca izninizle yüklüyoruz.
-      Ayrıntılar için <a href="/cerez-politikasi/" class="font-medium text-accent-600 underline">Çerez Politikası</a>.
+      Ayrıntılar için <a href="/cerez-politikasi/" class="cookie-copy-link">Çerez Politikası</a>.
     </p>
   </div>
 
   <div id="cookie-preferences" class="mt-4 hidden rounded-xl bg-gray-50 p-4">
-    <label class="flex cursor-pointer items-start justify-between gap-4 border-b border-gray-200 pb-3">
+    <label class="flex cursor-pointer items-start justify-between gap-4 pb-3">
       <span>
         <span class="block text-sm font-semibold text-primary-900">Pazarlama ve ölçüm</span>
         <span class="mt-1 block text-xs leading-5 text-gray-600">Google Ads etiketinin reklam performansını ölçmesine izin verir.</span>
@@ -36,12 +37,45 @@ const consentKey = 'leventoglu-consent-v1';
     <button id="cookie-save" type="button" class="mt-4 w-full rounded-lg bg-primary-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700">Tercihlerimi Kaydet</button>
   </div>
 
-  <div class="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+  <div id="cookie-actions" class="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
     <button id="cookie-accept" type="button" class="rounded-lg bg-primary-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700">Tümünü Kabul Et</button>
     <button id="cookie-reject" type="button" class="rounded-lg border border-primary-800 bg-white px-4 py-2.5 text-sm font-semibold text-primary-800 hover:bg-primary-50">İsteğe Bağlıları Reddet</button>
     <button id="cookie-manage" type="button" class="rounded-lg border border-primary-800 bg-white px-4 py-2.5 text-sm font-semibold text-primary-800 hover:bg-primary-50" aria-expanded="false">Tercihleri Yönet</button>
   </div>
 </aside>
+
+<style>
+  .cookie-consent-panel {
+    display: none;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(22rem, .95fr);
+    align-items: center;
+    gap: .5rem clamp(1rem, 4vw, 4rem);
+    border-radius: 0;
+    padding: 1rem var(--page-margin);
+    color: var(--ink);
+    background: #eef2f7;
+  }
+
+  .cookie-consent-panel:not(.hidden) { display: grid; }
+  #cookie-consent > div:first-of-type { max-width: 60rem; justify-self: end; }
+  #cookie-preferences { grid-column: 1 / -1; width: min(100%, 60rem); justify-self: center; margin-top: .6rem; padding: .7rem; border-radius: 0; }
+  #cookie-actions { grid-column: 2; grid-row: 1; width: 100%; margin: 0; }
+  #cookie-actions button { min-height: 44px; padding: .45rem .35rem; font-size: 13px; line-height: 1.2; }
+
+  #cookie-title { margin: 0; font-size: 19px; line-height: 1.2; }
+  #cookie-consent a.cookie-copy-link { color: #805000; text-decoration: underline; text-underline-offset: .2em; }
+  #cookie-consent > div:first-of-type p { margin-top: 0.4rem; font-size: 14px; line-height: 1.4; }
+  @media (max-width: 760px) {
+    .cookie-consent-panel { grid-template-columns: 1fr; gap: .5rem; padding-block: .8rem; }
+    #cookie-consent > div:first-of-type { justify-self: stretch; }
+    #cookie-preferences { grid-column: 1; }
+    #cookie-actions { grid-column: 1; grid-row: auto; }
+    #cookie-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    #cookie-actions button { min-height: 56px; padding: .4rem .25rem; font-size: 13px; }
+    #cookie-consent > div:first-of-type p { font-size: 14px; line-height: 1.35; }
+  }
+</style>
 
 <script define:vars={{ consentKey, gtmId: siteConfig.gtmId, googleAdsId: siteConfig.googleAdsId }}>
   const panel = document.getElementById('cookie-consent');
@@ -109,14 +143,15 @@ const consentKey = 'leventoglu-consent-v1';
     manageButton.setAttribute('aria-expanded', String(!isOpen));
   });
 
-  document.querySelectorAll('[data-cookie-settings]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const current = readConsent();
-      if (marketingInput) marketingInput.checked = Boolean(current?.marketing);
-      if (externalInput) externalInput.checked = Boolean(current?.external);
-      panel?.classList.remove('hidden');
-      preferences?.classList.remove('hidden');
-      manageButton?.setAttribute('aria-expanded', 'true');
-    });
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element) || !event.target.closest('[data-cookie-settings]')) return;
+    const current = readConsent();
+    if (marketingInput) marketingInput.checked = Boolean(current?.marketing);
+    if (externalInput) externalInput.checked = Boolean(current?.external);
+    panel?.classList.remove('hidden');
+    preferences?.classList.remove('hidden');
+    manageButton?.setAttribute('aria-expanded', 'true');
+    panel?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    panel?.focus({ preventScroll: true });
   });
 </script>

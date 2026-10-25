@@ -42,14 +42,14 @@ const aracImages = Array.from({ length: aracCount }, (_, i) => ({
     <div class="max-w-7xl mx-auto">
       <!-- Tab Buttons -->
       <div class="flex flex-wrap justify-center gap-3 mb-10">
-        <button data-tab="tasima" class="tab-btn active px-6 py-3 rounded-full font-semibold text-sm transition-all">
-          📦 Taşıma Fotoğrafları ({tasimaCount})
+        <button data-tab="tasima" class="tab-btn active px-6 py-3 rounded-full font-semibold text-sm">
+          Taşıma Fotoğrafları ({tasimaCount})
         </button>
-        <button data-tab="arac" class="tab-btn px-6 py-3 rounded-full font-semibold text-sm transition-all">
-          🚛 Araç Filomuz ({aracCount})
+        <button data-tab="arac" class="tab-btn px-6 py-3 rounded-full font-semibold text-sm">
+          Araç Filomuz ({aracCount})
         </button>
-        <button data-tab="video" class="tab-btn px-6 py-3 rounded-full font-semibold text-sm transition-all">
-          🎬 Video (1)
+        <button data-tab="video" class="tab-btn px-6 py-3 rounded-full font-semibold text-sm">
+          Video (1)
         </button>
       </div>
 
@@ -95,12 +95,13 @@ const aracImages = Array.from({ length: aracCount }, (_, i) => ({
           <video
             controls
             preload="metadata"
-            class="w-full rounded-xl shadow-lg"
+            class="gallery-video"
             poster="/images/tasima/evden-eve-nakliyat-01.jpeg"
           >
             <source src="/images/video/nakliyat-sureci.mp4" type="video/mp4" />
             Tarayıcınız video oynatmayı desteklemiyor.
           </video>
+          <p class="video-fallback" hidden>Video şu anda görüntülenemiyor.</p>
           <p class="text-center text-gray-600 mt-4">Nakliyat sürecimizden bir kesit</p>
         </div>
       </div>
@@ -111,17 +112,26 @@ const aracImages = Array.from({ length: aracCount }, (_, i) => ({
 </BaseLayout>
 
 <style>
+  .tab-content { padding-bottom: 1rem; }
   .tab-btn {
-    background-color: #f3f4f6;
-    color: #4b5563;
+    min-height: 48px;
+    padding: .75rem 1rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    color: #344c63;
+    font-size: 15px;
   }
-  .tab-btn:hover {
-    background-color: #e5e7eb;
-  }
+  .tab-btn:hover { color: #112438; border-color: #f59e0b; }
   .tab-btn.active {
-    background-color: #1B3A5C;
-    color: white;
+    border-color: #112438;
+    background: transparent;
+    color: #112438;
   }
+  .gallery-video { display: block; width: 100%; max-height: 75vh; background: #112438; }
+  .video-fallback { padding: 1rem 0; color: #344c63; }
+  :global(.gallery-grid a) { display: block; overflow: hidden; background: #eef2f7; }
 </style>
 
 <script>
@@ -133,5 +143,10 @@ const aracImages = Array.from({ length: aracCount }, (_, i) => ({
       document.querySelectorAll('.tab-content').forEach((c) => c.classList.add('hidden'));
       document.getElementById(`tab-${tab}`)?.classList.remove('hidden');
     });
+  });
+
+  document.querySelector('.gallery-video')?.addEventListener('error', () => {
+    const fallback = document.querySelector('.video-fallback');
+    if (fallback) fallback.hidden = false;
   });
 </script>

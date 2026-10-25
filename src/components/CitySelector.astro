@@ -1,54 +1,51 @@
 ---
 import { cities } from '../data/cities';
+
+const photoPaths = Array.from({ length: 10 }, (_, i) =>
+  `/images/tasima/evden-eve-nakliyat-${String(i + 1).padStart(2, '0')}.jpeg`
+);
 ---
 
-<section class="section-padding bg-primary-50" id="sehir-secici">
-  <div class="container-narrow">
-    <div class="text-center mb-10">
-      <h2 class="text-3xl md:text-4xl font-bold text-primary-800 mb-4">
-        Nereden Nereye Taşınıyorsunuz?
-      </h2>
-      <p class="text-gray-600 max-w-2xl mx-auto">
-        Şehirlerinizi seçin, size özel nakliyat bilgilerine hemen ulaşın.
-      </p>
+<section class="city-selector-section" id="sehir-secici" aria-labelledby="city-selector-heading">
+  <div class="city-photo-window" aria-hidden="true">
+    <div class="city-photo-track">
+      {[...photoPaths, ...photoPaths].map((src) => (
+        <img src={src} alt="" width="960" height="640" loading="lazy" />
+      ))}
+    </div>
+  </div>
+
+  <div class="city-selector-content">
+    <div class="city-selector-heading">
+      <h2 id="city-selector-heading">Nereden Nereye Taşınıyorsunuz?</h2>
+      <p>Şehirlerinizi seçin, size özel nakliyat bilgilerine hemen ulaşın.</p>
     </div>
 
-    <div class="max-w-2xl mx-auto">
-      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
-            <label for="city-from" class="block text-sm font-medium text-gray-700 mb-2">Nereden</label>
-            <select
-              id="city-from"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-accent-500 text-gray-800 bg-white"
-            >
-              <option value="">Şehir seçin...</option>
-              {cities.map((city) => (
-                <option value={city.slug}>{city.name}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label for="city-to" class="block text-sm font-medium text-gray-700 mb-2">Nereye</label>
-            <select
-              id="city-to"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-accent-500 text-gray-800 bg-white"
-            >
-              <option value="">Şehir seçin...</option>
-              {cities.map((city) => (
-                <option value={city.slug}>{city.name}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <button
-          id="city-search-btn"
-          class="btn-primary w-full py-4 text-base"
-        >
-          <svg class="w-5 h-5 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-          Nakliyat Bilgilerini Görüntüle
-        </button>
+    <div class="city-selector-fields">
+      <div class="city-field">
+        <label for="city-from">Nereden</label>
+        <select id="city-from">
+          <option value="">Şehir seçin...</option>
+          {cities.map((city) => (
+            <option value={city.slug}>{city.name}</option>
+          ))}
+        </select>
       </div>
+      <div class="city-field">
+        <label for="city-to">Nereye</label>
+        <select id="city-to">
+          <option value="">Şehir seçin...</option>
+          {cities.map((city) => (
+            <option value={city.slug}>{city.name}</option>
+          ))}
+        </select>
+      </div>
+      <button id="city-search-btn" type="button" class="city-search-button">
+        <svg class="city-search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        Nakliyat Bilgilerini Görüntüle
+      </button>
     </div>
   </div>
 </section>
@@ -65,10 +62,138 @@ import { cities } from '../data/cities';
       return;
     }
     if (from === to) {
-      // Aynı şehir → o şehrin sayfasına git
       window.location.href = `/${from}-evden-eve-nakliyat/`;
       return;
     }
     window.location.href = `/${from}-${to}-evden-eve-nakliyat/`;
   });
 </script>
+
+<style>
+  .city-selector-section {
+    padding: 0 0 clamp(4.5rem, 9vw, 8rem);
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+  }
+
+  .city-photo-window { width: 100%; overflow: hidden; padding-top: clamp(1.5rem, 3vw, 3rem); }
+
+  .city-photo-track {
+    display: flex;
+    width: max-content;
+    gap: 0.75rem;
+    animation: city-photo-travel 3.6s ease-out 1 both;
+  }
+
+  .city-photo-track img {
+    width: clamp(10rem, 20vw, 22rem);
+    height: clamp(9rem, 16vw, 15rem);
+    display: block;
+    flex: 0 0 auto;
+    object-fit: cover;
+  }
+
+  .city-photo-track img:nth-child(4n + 1) { width: clamp(12rem, 23vw, 27rem); }
+  .city-photo-track img:nth-child(4n + 2) { width: clamp(10rem, 16vw, 18rem); }
+  .city-photo-track img:nth-child(4n + 3) { width: clamp(13rem, 21vw, 24rem); }
+
+  .city-selector-content {
+    max-width: 1760px;
+    margin-inline: auto;
+    padding: clamp(3rem, 6vw, 5.5rem) var(--page-margin) 0;
+  }
+
+  .city-selector-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+    align-items: end;
+    gap: clamp(2rem, 6vw, 6rem);
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .city-selector-heading h2 {
+    max-width: 15ch;
+    margin: 0;
+    color: var(--paper);
+    font-size: clamp(2rem, 4.5vw, 4rem);
+  }
+
+  .city-selector-heading p {
+    max-width: 38ch;
+    margin: 0 0 0.35rem;
+    color: #d5dee7;
+    font-size: 17px;
+  }
+
+  .city-selector-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(15rem, 0.9fr);
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .city-field {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+    background: #1c344b;
+  }
+
+  .city-field label { color: #e1e9f0; font-size: 15px; }
+
+  .city-field select {
+    width: 100%;
+    min-height: 44px;
+    border: 0;
+    border-radius: 0;
+    color: var(--paper);
+    background-color: transparent;
+    font-size: 17px;
+    cursor: pointer;
+  }
+
+  .city-field select option { color: var(--ink); background: var(--paper); }
+
+  .city-search-button {
+    min-height: 76px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 1rem 1.25rem;
+    border: 0;
+    border-radius: 0;
+    color: var(--ink);
+    background: var(--accent);
+    font-size: 16px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: color 180ms ease, background-color 180ms ease;
+  }
+
+  .city-search-button:hover { color: var(--paper); background: #8e5700; }
+  .city-search-icon { width: 1.2rem; height: 1.2rem; flex: 0 0 auto; }
+
+  @keyframes city-photo-travel { to { transform: translateX(-3%); } }
+
+  @media (max-width: 900px) {
+    .city-selector-heading { grid-template-columns: 1fr; align-items: start; gap: .75rem; }
+    .city-selector-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .city-search-button { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 560px) {
+    .city-photo-track { animation-duration: 3.6s; }
+    .city-photo-track img { width: 8.75rem; height: 8.75rem; }
+    .city-selector-fields { grid-template-columns: 1fr; }
+    .city-search-button { grid-column: auto; width: 100%; min-height: 58px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .city-photo-track { animation: none; }
+  }
+</style>
