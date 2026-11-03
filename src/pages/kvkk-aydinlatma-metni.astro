@@ -1,0 +1,84 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { siteConfig } from '../data/site';
+---
+
+<LegalLayout
+  title="KVKK Aydınlatma Metni | Leventoğlu Nakliyat"
+  description="Leventoğlu Nakliyat web sitesi ve teklif talepleri kapsamında kişisel verilerin işlenmesine ilişkin KVKK aydınlatma metni."
+  heading="KVKK Aydınlatma Metni"
+>
+  <p class="notice">
+    Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu'nun (KVKK) 10. maddesi kapsamında,
+    web sitemizi ziyaret ettiğinizde veya teklif talebinde bulunduğunuzda kişisel verilerinizin
+    nasıl işlendiğini açıklamak için hazırlanmıştır.
+  </p>
+
+  <h2>1. Veri sorumlusu</h2>
+  <p>
+    Kişisel verileriniz; veri sorumlusu sıfatıyla <strong>{siteConfig.legalName}</strong> tarafından
+    işlenmektedir. Veri sorumlusuna {siteConfig.address.full} adresinden,
+    <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> e-posta adresinden veya
+    <a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneDisplay}</a> numaralı telefondan ulaşabilirsiniz.
+  </p>
+
+  <h2>2. İşlenen kişisel veriler</h2>
+  <ul>
+    <li><strong>Kimlik ve iletişim:</strong> Ad-soyad, telefon numarası ve iletişim tercihiniz.</li>
+    <li><strong>Talep ve işlem bilgileri:</strong> Taşınma rotası, planlanan tarih, eşya ve hizmet detayları ile serbest metin notlarınız.</li>
+    <li><strong>Dijital işlem ve güvenlik:</strong> IP adresi, erişim tarihi, tarayıcı/cihaz bilgileri ve hata-güvenlik kayıtları; barındırma altyapısının tuttuğu ölçüde.</li>
+    <li><strong>Çerez tercihleri ve pazarlama verileri:</strong> Yalnızca izin vermeniz halinde reklam etiketi tanımlayıcıları ve etkileşim bilgileri.</li>
+  </ul>
+  <p>Lütfen teklif notu alanına sağlık bilgisi gibi özel nitelikli kişisel veriler yazmayın.</p>
+
+  <h2>3. İşleme amaçları ve hukuki sebepler</h2>
+  <ul>
+    <li>Teklif talebinizi almak, sizinle iletişim kurmak ve taşıma hizmetini planlamak amacıyla; KVKK m.5/2-c uyarınca sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması hukuki sebebine dayanarak.</li>
+    <li>Talep ve iletişim kayıtlarını takip etmek, uyuşmazlıkları yönetmek ve bilgi güvenliğini sağlamak amacıyla; KVKK m.5/2-e kapsamında bir hakkın tesisi, kullanılması veya korunması ve m.5/2-f kapsamında temel haklarınıza zarar vermemek kaydıyla meşru menfaat hukuki sebeplerine dayanarak.</li>
+    <li>Fatura, muhasebe ve yetkili kurum taleplerini yerine getirmek amacıyla; KVKK m.5/2-a ve m.5/2-ç kapsamındaki kanuni yükümlülük hukuki sebeplerine dayanarak.</li>
+    <li>Google Ads gibi zorunlu olmayan reklam teknolojilerini çalıştırmak amacıyla; yalnızca KVKK m.5/1 kapsamında açık rızanız bulunduğunda.</li>
+  </ul>
+
+  <h2>4. Toplama yöntemi</h2>
+  <p>
+    Veriler; teklif formuna yazdığınız bilgiler, telefon, e-posta veya WhatsApp üzerinden kurduğunuz iletişim
+    ve siteyi kullanırken oluşan sınırlı teknik kayıtlar yoluyla, tamamen veya kısmen otomatik yöntemlerle ya da
+    sözlü/yazılı olarak otomatik olmayan yöntemlerle toplanır. Teklif formu bilgileri bu web sitesinde bir sunucuya
+    kaydedilmez; tarayıcınızda bir WhatsApp mesajı olarak hazırlanır ve mesajı göndermeyi seçmeniz halinde WhatsApp'a iletilir.
+  </p>
+
+  <h2>5. Aktarım</h2>
+  <p>Kişisel verileriniz, yalnızca yukarıdaki amaçların gerektirdiği ölçüde;</p>
+  <ul>
+    <li>talebinizi karşılayan yetkili çalışanlar ve taşıma operasyonunda görev alan hizmet sağlayıcılarla,</li>
+    <li>barındırma, bilgi güvenliği, iletişim ve muhasebe hizmeti sağlayıcılarıyla,</li>
+    <li>kanunen yetkili kamu kurumları, mahkemeler ve icra mercileriyle</li>
+  </ul>
+  <p>
+    paylaşılabilir. WhatsApp ile iletişimi, Google haritasını veya isteğe bağlı reklam çerezlerini kullanmanız halinde
+    verileriniz bu hizmetlerin sağlayıcıları tarafından yurt dışında işlenebilir. Zorunlu olmayan Google hizmetleri,
+    çerez panelinden izin vermediğiniz sürece yüklenmez. Üçüncü taraf hizmetlerinin kendi gizlilik koşulları ayrıca geçerlidir.
+  </p>
+
+  <h2>6. Saklama süreleri</h2>
+  <ul>
+    <li>Hizmete dönüşmeyen teklif talepleri: Son iletişimden itibaren en fazla 2 yıl.</li>
+    <li>Sözleşme, hizmet, fatura ve muhasebe kayıtları: İlgili yasal saklama ve zamanaşımı süreleri boyunca.</li>
+    <li>Güvenlik kayıtları: Güvenlik amacı için gerekli makul süre boyunca.</li>
+    <li>Çerez tercihi: En fazla 12 ay; daha önce tarayıcınızdan silebilir veya tercihinizi değiştirebilirsiniz.</li>
+  </ul>
+
+  <h2>7. KVKK kapsamındaki haklarınız</h2>
+  <p>
+    KVKK'nın 11. maddesi kapsamında kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi isteme,
+    işleme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, aktarılan üçüncü kişileri bilme, eksik veya
+    yanlış işlenen verilerin düzeltilmesini ve şartları varsa silinmesini/yok edilmesini isteme, bu işlemlerin üçüncü
+    kişilere bildirilmesini isteme, münhasıran otomatik sistemlerle analiz sonucu aleyhinize çıkan sonuca itiraz etme
+    ve kanuna aykırı işleme nedeniyle zararın giderilmesini talep etme haklarına sahipsiniz.
+  </p>
+  <p>
+    Başvurunuzu kimliğinizi doğrulamaya elverişli bilgiler ve talebinizle birlikte yukarıdaki adrese yazılı olarak veya
+    <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> adresine iletebilirsiniz. Başvurular, niteliğine göre
+    en geç 30 gün içinde ücretsiz sonuçlandırılır; işlemin ayrıca maliyet gerektirmesi halinde mevzuattaki tarife uygulanabilir.
+  </p>
+</LegalLayout>

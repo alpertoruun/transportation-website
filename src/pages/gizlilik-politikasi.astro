@@ -1,0 +1,60 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { siteConfig } from '../data/site';
+---
+
+<LegalLayout
+  title="Gizlilik Politikası | Leventoğlu Nakliyat"
+  description="Leventoğlu Nakliyat web sitesinin gizlilik, veri güvenliği ve üçüncü taraf hizmetleri politikası."
+  heading="Gizlilik Politikası"
+>
+  <p>
+    {siteConfig.name}, web sitesini ziyaret edenlerin ve hizmet talebinde bulunanların gizliliğine saygı gösterir.
+    Bu politika, sitedeki genel gizlilik uygulamalarını açıklar. Kişisel verilerin belirli bir işlem kapsamında nasıl
+    işlendiğine ilişkin ayrıntılı ve faaliyet bazlı bilgi için
+    <a href="/kvkk-aydinlatma-metni/">KVKK Aydınlatma Metni'ni</a> inceleyin.
+  </p>
+
+  <h2>Topladığımız bilgiler</h2>
+  <p>
+    Teklif almak için paylaştığınız ad-soyad, telefon, taşınma rotası, tarih ve notlar ile iletişim sırasında
+    verdiğiniz bilgiler işlenebilir. Site barındırma altyapısı ayrıca IP adresi, tarayıcı türü, ziyaret zamanı ve
+    güvenlik kayıtları gibi teknik verileri oluşturabilir.
+  </p>
+
+  <h2>Bilgileri nasıl kullanıyoruz?</h2>
+  <ul>
+    <li>Teklifinizi hazırlamak, sizinle iletişim kurmak ve talep ettiğiniz hizmeti sunmak.</li>
+    <li>Siteyi güvenli, erişilebilir ve çalışır durumda tutmak.</li>
+    <li>Yasal yükümlülükleri yerine getirmek ve olası uyuşmazlıklarda hakları korumak.</li>
+    <li>Yalnızca izniniz varsa reklam performansını ölçmek.</li>
+  </ul>
+
+  <h2>Teklif formu ve WhatsApp</h2>
+  <p>
+    Teklif formuna girdiğiniz bilgiler web sitemizin sunucusuna kaydedilmez. Gönder düğmesine bastığınızda bilgiler
+    tarayıcınızda bir WhatsApp mesajına dönüştürülür; mesajı kontrol edip WhatsApp üzerinden göndermek sizin tercihinizdir.
+    WhatsApp kullanmak istemiyorsanız bizi telefonla arayabilir veya e-posta gönderebilirsiniz. WhatsApp/Meta'nın kendi
+    gizlilik politikası bu platformdaki işlemler için ayrıca geçerlidir.
+  </p>
+
+  <h2>Çerezler ve harici içerik</h2>
+  <p>
+    Site, tercihinizi hatırlamak için tarayıcınızın yerel depolama alanını kullanır. Google Ads etiketi yalnızca
+    pazarlama çerezlerine izin verirseniz; Google Maps içeriği ise harici içeriği yüklemeyi seçerseniz etkinleşir.
+    Ayrıntılar ve tercihlerinizi değiştirme seçenekleri için <a href="/cerez-politikasi/">Çerez Politikası'nı</a> inceleyin.
+  </p>
+
+  <h2>Güvenlik ve saklama</h2>
+  <p>
+    Kişisel verilere yetkisiz erişimi, kaybı ve hukuka aykırı kullanımı önlemeye yönelik makul teknik ve idari tedbirler
+    uygulanır. Veriler yalnızca işleme amacı ve yasal yükümlülüklerin gerektirdiği süre boyunca saklanır; ardından güvenli
+    şekilde silinir, yok edilir veya anonim hale getirilir.
+  </p>
+
+  <h2>İletişim</h2>
+  <p>
+    Gizlilik sorularınız için <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> adresine yazabilir veya
+    <a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneDisplay}</a> numarasını arayabilirsiniz.
+  </p>
+</LegalLayout>

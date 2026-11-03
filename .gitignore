@@ -1,0 +1,49 @@
+# build output
+dist/
+
+# dependencies
+node_modules/
+
+# astro
+.astro/
+
+# environment variables
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# editor
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# reference material (not part of the site)
+/references/
+
+# local agent tools and generated context
+.agents/
+.claude/
+.codex/
+.taste-skill/
+.codebase-memory/
+skills-lock.json
+
+# private project briefs and internal working reports
+/my-aim*.md
+/docs/
+
+# local duplicates and backup copies
+* - Copy*
+/logo.png
+
+# credentials, logs, and local data
+*.pem
+*.key
+*.p12
+*.pfx
+*.log

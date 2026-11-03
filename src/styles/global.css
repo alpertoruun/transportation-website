@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans text-gray-800 bg-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-primary-800;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-accent-500 text-white font-semibold rounded-lg
+           hover:bg-accent-600 transition-colors duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg
+           hover:bg-primary-700 transition-colors duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-green-500 text-white font-semibold rounded-lg
+           hover:bg-green-600 transition-colors duration-200 shadow-md hover:shadow-lg gap-2;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-primary-600 text-primary-600 font-semibold rounded-lg
+           hover:bg-primary-600 hover:text-white transition-colors duration-200;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 px-4;
+  }
+
+  .container-narrow {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6;
+  }
+
+  .gradient-overlay {
+    @apply bg-gradient-to-r from-primary-900/90 to-primary-800/70;
+  }
+}
+
+/* WhatsApp floating button animation */
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+}
+
+.whatsapp-pulse {
+  animation: pulse-green 2s infinite;
+}
+
+/* Fade-in animation for sections */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Counter animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,96 @@
+---
+import { ankaraDistricts, type AnkaraArea } from '../data/ankara';
+import { siteConfig } from '../data/site';
+import { services } from '../data/services';
+
+interface Props { area: AnkaraArea }
+const { area } = Astro.props;
+const isAnkara = area.slug === 'ankara';
+const message = `Merhaba, ${area.name} evden eve nakliyat için fiyat teklifi almak istiyorum. Çıkış ve varış adresi, katlar, eşya listesi ve tarih bilgilerini paylaşacağım.`;
+const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(message)}`;
+---
+
+<section class="bg-primary-800 py-12 md:py-16">
+  <div class="max-w-7xl mx-auto px-4">
+    <p class="text-accent-400 font-semibold mb-3">Pursaklar merkezli Leventoğlu Nakliyat</p>
+    <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">{area.name} Evden Eve Nakliyat</h1>
+    <p class="text-gray-200 text-lg max-w-3xl leading-relaxed">{area.intro}</p>
+    <div class="flex flex-wrap gap-4 mt-6">
+      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp’tan Fiyat Teklifi Al</a>
+      <a href={`tel:${siteConfig.phone}`} class="btn-primary">Ara: {siteConfig.phoneDisplay}</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-padding bg-white">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-2xl md:text-3xl font-bold text-primary-800 mb-5">{area.planningTitle}</h2>
+    {area.planning.map((paragraph) => <p class="text-gray-600 leading-relaxed mb-4">{paragraph}</p>)}
+    <h3 class="text-xl font-bold text-primary-800 mt-8 mb-4">Teklif öncesi hazırlayacağınız bilgiler</h3>
+    <ul class="list-disc pl-6 space-y-3 text-gray-600">
+      {area.checklist.map((item) => <li>{item}</li>)}
+    </ul>
+    {(isAnkara || area.slug === 'pursaklar') && (
+      <address class="not-italic bg-primary-50 p-6 rounded-xl mt-8 text-gray-700">
+        <strong class="block text-primary-800 mb-2">Pursaklar’daki işletme adresimiz</strong>
+        {siteConfig.address.full}<br />
+        <a href="/iletisim/" class="text-primary-700 underline">İletişim ve randevu bilgileri</a>
+      </address>
+    )}
+    {!isAnkara && area.slug !== 'pursaklar' && (
+      <p class="text-gray-600 mt-6">İşletme adresimiz Pursaklar’dadır; {area.name} taşıma hizmeti sunduğumuz bölgelerdendir. <a href="/iletisim/" class="text-primary-700 underline">İletişim bilgilerimize ulaşın.</a></p>
+    )}
+  </div>
+</section>
+
+<section class="section-padding bg-gray-50">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-2xl md:text-3xl font-bold text-primary-800 mb-6">{area.name} Nakliyat Hizmetleri</h2>
+    <p class="text-gray-600 mb-6">Taşınmanızın kapsamını ihtiyacınıza göre belirleyin. Hizmet ayrıntılarını aşağıdan inceleyebilir, teklifinizde hangi işlerin yer almasını istediğinizi paylaşabilirsiniz.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {services.map((service) => (
+        <a href={`/hizmetlerimiz/${service.slug}/`} class="block border border-gray-200 rounded-lg p-5 bg-white hover:border-accent-500">
+          <h3 class="font-bold text-primary-800 mb-2">{service.title}</h3>
+          <p class="text-sm text-gray-600">{service.shortDesc}</p>
+        </a>
+      ))}
+    </div>
+    <h2 class="text-2xl md:text-3xl font-bold text-primary-800 mt-12 mb-5">{area.name} Nakliyat Fiyatları Nasıl Belirlenir?</h2>
+    <p class="text-gray-600 leading-relaxed mb-4">Nakliyat fiyatı; eşya miktarı, çıkış ve varış katları, araç erişimi, yol, paketleme ve mobilya söküm ihtiyacına göre hazırlanır. Dış cephe asansörü veya depolama gerekiyorsa bu hizmetler de teklif kapsamında ayrıca netleştirilir.</p>
+    <p class="text-gray-600 leading-relaxed mb-4">Teklif isterken taşınma tarihinizi, iki adresi, katları ve büyük eşyaların listesini gönderin. Bina girişinin ve eşyaların fotoğrafları değerlendirmeyi kolaylaştırır. Aynı oda sayısındaki iki ev için farklı miktarda eşya ve işçilik gerekebileceğinden, adres bilgisi olmadan kesin tutar vermiyoruz.</p>
+    <p class="text-gray-600 leading-relaxed">Taşıma öncesinde paketleme, montaj ve asansörün fiyata dahil olup olmadığını yazılı olarak netleştirin. Sigorta kapsamı, limitleri ve varsa istisnaları da sözleşme veya poliçe üzerinden görüşün.</p>
+    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-whatsapp mt-6">Taşınma Bilgilerini Gönder, Teklif Al</a>
+  </div>
+</section>
+
+<section class="section-padding bg-white">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-2xl md:text-3xl font-bold text-primary-800 mb-6">{area.name} Taşınma Soruları</h2>
+    <div class="space-y-4">
+      {area.questions.map((item) => (
+        <details class="border border-gray-200 rounded-lg p-5">
+          <summary class="font-semibold text-primary-800 cursor-pointer">{item.question}</summary>
+          <p class="text-gray-600 leading-relaxed mt-3">{item.answer}</p>
+        </details>
+      ))}
+    </div>
+    <p class="mt-6 text-gray-600">Hazırlık için <a href="/blog/tasinirken-dikkat-edilmesi-gerekenler/" class="text-primary-700 underline">taşınırken dikkat edilecekler</a> ve <a href="/blog/esya-paketleme-teknikleri/" class="text-primary-700 underline">eşya paketleme rehberini</a> inceleyin.</p>
+    <h2 class="text-2xl font-bold text-primary-800 mt-12 mb-6">{isAnkara ? 'Ankara İlçelerinde Nakliyat' : 'Ankara’daki Diğer Hizmet Bölgeleri'}</h2>
+    {!isAnkara && <p class="mb-5"><a href="/ankara-evden-eve-nakliyat/" class="text-primary-700 underline">Ankara evden eve nakliyat ve ilçeler arası taşıma</a></p>}
+    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+      {ankaraDistricts.filter((district) => district.slug !== area.slug).map((district) => (
+        <li><a href={`/${district.slug}-evden-eve-nakliyat/`} class="block p-4 border border-gray-200 rounded-lg text-primary-800 hover:border-accent-500">{district.name} Nakliyat</a></li>
+      ))}
+    </ul>
+    {isAnkara && (
+      <div class="mt-10">
+        <h3 class="text-xl font-bold text-primary-800 mb-4">Ankara’dan şehirler arası taşınma</h3>
+        <ul class="flex flex-wrap gap-5">
+          <li><a class="text-primary-700 underline" href="/ankara-istanbul-evden-eve-nakliyat/">Ankara İstanbul nakliyat</a></li>
+          <li><a class="text-primary-700 underline" href="/ankara-izmir-evden-eve-nakliyat/">Ankara İzmir nakliyat</a></li>
+          <li><a class="text-primary-700 underline" href="/ankara-antalya-evden-eve-nakliyat/">Ankara Antalya nakliyat</a></li>
+        </ul>
+      </div>
+    )}
+  </div>
+</section>

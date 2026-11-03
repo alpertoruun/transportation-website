@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+>
+  <div class="max-w-7xl mx-auto px-4">
+    <Breadcrumb items={[
+      { label: 'Ana Sayfa', href: '/' },
+      { label: 'Blog', href: '/blog/' },
+      { label: post.data.title },
+    ]} />
+  </div>
+
+  <article class="section-padding bg-white">
+    <div class="max-w-3xl mx-auto">
+      <header class="mb-8">
+        <div class="flex items-center gap-3 text-sm text-gray-500 mb-4">
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            {post.data.date.toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </span>
+          <span>•</span>
+          <span>{post.data.author}</span>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-primary-800 leading-tight">{post.data.title}</h1>
+        {post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-4">
+            {post.data.tags.map((tag) => (
+              <span class="px-3 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full">{tag}</span>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <div class="prose prose-lg max-w-none prose-headings:text-primary-800 prose-a:text-accent-600 prose-a:no-underline hover:prose-a:underline">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <CTASection title="Taşınma Planınız mı Var?" subtitle="WhatsApp üzerinden hemen ücretsiz fiyat teklifi alın." />
+</BaseLayout>

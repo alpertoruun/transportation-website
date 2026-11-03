@@ -1,0 +1,74 @@
+---
+import { cities } from '../data/cities';
+---
+
+<section class="section-padding bg-primary-50" id="sehir-secici">
+  <div class="container-narrow">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-primary-800 mb-4">
+        Nereden Nereye Taşınıyorsunuz?
+      </h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        Şehirlerinizi seçin, size özel nakliyat bilgilerine hemen ulaşın.
+      </p>
+    </div>
+
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label for="city-from" class="block text-sm font-medium text-gray-700 mb-2">Nereden</label>
+            <select
+              id="city-from"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-accent-500 text-gray-800 bg-white"
+            >
+              <option value="">Şehir seçin...</option>
+              {cities.map((city) => (
+                <option value={city.slug}>{city.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label for="city-to" class="block text-sm font-medium text-gray-700 mb-2">Nereye</label>
+            <select
+              id="city-to"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-accent-500 text-gray-800 bg-white"
+            >
+              <option value="">Şehir seçin...</option>
+              {cities.map((city) => (
+                <option value={city.slug}>{city.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <button
+          id="city-search-btn"
+          class="btn-primary w-full py-4 text-base"
+        >
+          <svg class="w-5 h-5 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          Nakliyat Bilgilerini Görüntüle
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.getElementById('city-search-btn')?.addEventListener('click', () => {
+    const fromSelect = document.getElementById('city-from') as HTMLSelectElement;
+    const toSelect = document.getElementById('city-to') as HTMLSelectElement;
+    const from = fromSelect?.value;
+    const to = toSelect?.value;
+
+    if (!from || !to) {
+      alert('Lütfen her iki şehri de seçin.');
+      return;
+    }
+    if (from === to) {
+      // Aynı şehir → o şehrin sayfasına git
+      window.location.href = `/${from}-evden-eve-nakliyat/`;
+      return;
+    }
+    window.location.href = `/${from}-${to}-evden-eve-nakliyat/`;
+  });
+</script>

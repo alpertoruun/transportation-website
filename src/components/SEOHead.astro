@@ -1,0 +1,77 @@
+---
+import { siteConfig } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: object | object[];
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/images/arac/nakliyat-araci-01.jpeg',
+  type = 'website',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, siteConfig.url);
+canonicalUrl.search = '';
+canonicalUrl.hash = '';
+canonicalUrl.hostname = new URL(siteConfig.url).hostname;
+canonicalUrl.protocol = 'https:';
+if (!canonicalUrl.pathname.endsWith('/') && !canonicalUrl.pathname.endsWith('.html')) {
+  canonicalUrl.pathname += '/';
+}
+
+const fullTitle = title.includes(siteConfig.shortName) ? title : `${title} | ${siteConfig.name}`;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteConfig.url}${ogImage}`;
+---
+
+<!-- Google Search Console -->
+<meta name="google-site-verification" content="9nnBZINkJdkrBCrF6UVlijmTH_KOhXS02WSQB-oGAnE" />
+
+<!-- Primary Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={description} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+<link rel="canonical" href={canonicalUrl.href} />
+
+<!-- Language -->
+<meta http-equiv="content-language" content="tr" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl.href} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:locale" content="tr_TR" />
+<meta property="og:site_name" content={siteConfig.name} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalUrl.href} />
+<meta property="twitter:title" content={fullTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImageUrl} />
+
+<!-- Geo -->
+<meta name="geo.region" content="TR" />
+<meta name="geo.placename" content="Ankara" />
+
+<!-- Structured Data -->
+{jsonLd && (
+  Array.isArray(jsonLd)
+    ? jsonLd.map((item) => (
+        <script type="application/ld+json" set:html={JSON.stringify(item)} />
+      ))
+    : <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+)}

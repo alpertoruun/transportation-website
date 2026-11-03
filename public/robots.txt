@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.leventoglunakliyat.com/sitemap-index.xml
